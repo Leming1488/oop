@@ -1,0 +1,70 @@
+{
+  "name": "convert-feed",
+  "version": "1.0.1",
+  "description": "convert-feed rss -> atom, atom -> rss CLI",
+  "main": "dist/index.js",
+  "bin": {
+    "convert-feed": "dist/bin/convert-feed.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "babel-node": "babel-node",
+    "flow": "flow",
+    "flow-typed": "flow-typed",
+    "gulp": "gulp",
+    "eslint": "eslint",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/__fixtures__/"
+    ],
+    "coverageDirectory": "./",
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leming1488/oop"
+  },
+  "author": "Pavel Kozelskiy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Leming1488/oop/issues"
+  },
+  "homepage": "https://github.com/Leming1488/oop#readme",
+  "dependencies": {
+    "axios": "*",
+    "chalk": "*",
+    "commander": "*",
+    "debug": "*",
+    "listr": "*",
+    "mz": "*",
+    "recursive-readdir": "*",
+    "rimraf": "*",
+    "rss-parser": "*",
+    "feed": "*"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "*",
+    "babel-eslint": "*",
+    "babel-plugin-transform-runtime": "*",
+    "babel-preset-env": "*",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-stage-0": "*",
+    "debug": "*",
+    "eslint": "*",
+    "eslint-config-airbnb-base": "*",
+    "eslint-plugin-flowtype": "*",
+    "eslint-plugin-import": "*",
+    "eslint-plugin-jest": "*",
+    "flow-bin": "^0.77.0",
+    "jest": "*",
+    "nock": "*"
+  }
+}
