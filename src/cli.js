@@ -1,6 +1,6 @@
 import app from 'commander';
 import path from 'path';
-import Feeds from './index';
+import Feeds from './';
 
 export default () => {
   app
@@ -9,7 +9,7 @@ export default () => {
     .description('convert-feed')
     .option('-f, --format [type]', 'Output format')
     .action((firstConfig, secondConfig) => {
-      console.log(new Feeds({path: secondConfig, format: firstConfig, metod: app.format}).convert());
+      new Feeds().convert({path: secondConfig, format: firstConfig, metod: app.format}).then((value) => console.log(value)) ;
     })
     .parse(process.argv)
 }

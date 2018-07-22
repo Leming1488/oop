@@ -8,43 +8,63 @@ const urlRegex = /^(?:[a-z]+:)?\/\//i;
 const isUrl = url => (urlRegex.test(url));
 const readData = filePath => fs.readFileSync(filePath, encoding);
 
-export default class Feeds {
-  constructor(options = {}) {
-    this.options = {};
-    this.options.path = options.path;
-    this.options.format = options.format;
-    this.options.metod = options.metod || 'data';
+class Parser {
+  constructor() {
+    this.parser = new RssParser();
   }
-  convert (options = this.options) {
+  url (data) {
+    return  this.parser.parseURL(data);
+  }
+  string (data) {
+    return this.parser.parseString(data);
+  }
+}
+class Render {
+  constructor(options) {
+    this.node = new Feed(options);
+  }
+  atom () {
+    return this.node.rss2();
+  }
+  rss () {
+    return this.node.rss2();
+  }
+  addItem (posts) {
+    posts.forEach(post => this.node.addItem(post));
+  }
+}
+
+export default class Feeds {
+  async convert (options = {}) {
     try {
-    const {path, format, metod} = options;
-    const feeds = isUrl(path) ? this.parse(path).fromUrl : this.parse(path).fromString;
-    const sortedFeeds = mapping(feeds)[metod];
-    return formating(sortedFeeds)[format];
+      const {path, format, metod = 'default'} = options;
+      const feeds = await this.parsing(path);
+      return this.rendering(feeds, this.mapping(metod))[format]();
     } catch (error) {
       throw new Error(error.code);
     }
   }
-  async parse (data) {
-    const parser = new RssParser();
-    return {
-      fromUrl: await parser.parseURL(data),
-      fromString: parser.parseString(data)
+  parsing (data) {
+    const parser = new Parser();
+    if (isUrl(data)) {
+      return  parser['url'](data);
     };
+    return parser['string'](data);
+
+  }
+  rendering (data, fn) {
+    const render = new Render(data);
+    const mappingItems = fn(data.items);
+    render.addItem(mappingItems);
+    return render;
   };
-  formating (data) {
-    const feed = new Feed(data);
-    return {
-      toAtom: feed.atom1(),
-      toRss: feed.rss2()
+  mapping (options) {
+    const map = {
+      reverse: data => data.reverse(),
+      sort: data => data.sort(),
+      limit: data => data.map(),
+      default: data => data
     };
-  };
-  mapping (data) {
-    return {
-      reverse: data.sort(),
-      sort: data.sort(),
-      limit: data.map(),
-      data: data
-    };
+    return (data) => map[options](data)
   };
 }

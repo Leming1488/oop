@@ -1,6 +1,6 @@
 install: install-deps
 run:
-	DEBUG=page-loader npm run babel-node -- 'src/bin/convert-feed.js' 'atom' 'https://ru.hexlet.io/lessons.rss'
+	DEBUG=page-loader npm run babel-node  -- 'src/bin/convert-feed.js' 'rss' 'https://ru.hexlet.io/lessons.rss'
 
 install-deps:
 	npm install
